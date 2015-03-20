@@ -26,12 +26,6 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // apply "sessionAuth.js" policy to ALL actions at first
-  '*': 'sessionAuth',
-
-  // overide above
-  'auth': {
-    '*': true   // for ALL actions in Auth controller, apply 'true' policy
-  }
+  '*': true
 
 };

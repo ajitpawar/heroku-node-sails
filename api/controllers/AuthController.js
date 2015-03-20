@@ -10,7 +10,7 @@ var passport = require('passport');
 module.exports = {
 
   index: function(req, res) {
-    res.view();         // if left empty, index.ejs rendered by default
+    res.view({user: req.user});         // if left empty, index.ejs rendered by default
   },
 
   logout: function(req, res) {

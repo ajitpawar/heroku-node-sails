@@ -1,9 +1,7 @@
 {
-  "name": "sails-social-auth-example",
+  "name": "pawar.ca",
   "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
   "dependencies": {
     "sails": "~0.10.4",
     "sails-disk": "~0.10.0",
@@ -23,8 +21,7 @@
     "grunt-contrib-less": "0.11.1",
     "grunt-contrib-coffee": "~0.10.1",
     "passport": "^0.2.0",
-    "passport-google-oauth": "~0.2.0",
-    "rc": "~0.3.3"
+    "passport-google-oauth": "~0.2.0"
   },
   "scripts": {
     "start": "node app.js",
