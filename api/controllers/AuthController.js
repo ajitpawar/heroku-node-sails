@@ -13,11 +13,6 @@ module.exports = {
     res.view({user: req.user});         // if left empty, index.ejs rendered by default
   },
 
-  logout: function(req, res) {
-    req.logout();       // logout() function exposed by passport.js on req object
-    res.redirect('/');
-  },
-
   // OAuth2.0
   // https://developers.google.com/accounts/docs/OAuth2Login#scope-param
   google: function(req, res) {

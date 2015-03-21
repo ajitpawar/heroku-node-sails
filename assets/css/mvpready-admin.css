@@ -1914,7 +1914,7 @@ table.table thead .sorting_desc_disabled,
 .navbar-inverse {
   margin-bottom: 0;
   /*background-color: #2f4354;*/
-  background-color: #2e2f33;
+  background-color: #00a4b7;
   background-image: -webkit-linear-gradient(top, #425d75 0%, #2f4354 100%);
   background-image: linear-gradient(to bottom, #425d75 0%, #2f4354 100%);
   background-repeat: repeat-x;
@@ -1930,7 +1930,7 @@ table.table thead .sorting_desc_disabled,
 }
 .navbar-inverse .navbar-collapse,
 .navbar-inverse .navbar-form {
-  border-color: #141c23;
+  border-color: #00a4b7;
 }
 .navbar-collapse.in {
   max-height: none;
