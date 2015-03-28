@@ -7,7 +7,7 @@ var passport = require('passport')
 // console.developers.google.com
 var GOOGLE_CLIENT_ID = "450642794440-5fs9j6a45oppub6rcbutthl3beb91t79.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = "eUkL8EXspmvFUJ6W2H4kt0eL";
-var CALL_BACK_URL = "http://pawar.ca:3000/auth/google/callback";
+var CALL_BACK_URL = "http://localhost:3000/auth/google/callback";
 
 
 

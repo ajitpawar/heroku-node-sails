@@ -18,6 +18,9 @@ sudo npm install sails -g
 // Forever
 sudo npm install -g forever
 
+// Windows hosts file
+C:\Windows\System32\drivers\etc
+
 // Clone the repo
 git clone <repo>
 
@@ -25,3 +28,18 @@ git clone <repo>
 cd <dir>
 sudo npm install
 node forever
+
+/************************
+* Google authentication
+************************/
+Go to https://console.developers.google.com/
+API & Auth --> Credentials
+Two types of OAuth keys:
+	* web application --> using google for authentication etc.
+							NOTE: do not forget to register your callbacks under
+							"Redirect URIs" and "Javascript Origins"
+
+	* service account --> using google API to get files from google drive etc.
+
+In sails, Authentication policies enforced under: config/policies.js
+
