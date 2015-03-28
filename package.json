@@ -21,7 +21,8 @@
     "grunt-contrib-less": "0.11.1",
     "grunt-contrib-coffee": "~0.10.1",
     "passport": "~0.2.1",
-    "passport-google-oauth": "~0.2.0"
+    "passport-google-oauth": "~0.2.0",
+    "forever-monitor" : "~1.5.2"
   },
   "scripts": {
     "start": "node app.js",
