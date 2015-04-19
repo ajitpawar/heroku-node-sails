@@ -1,3 +1,7 @@
+## Purpose
+This branch contains dev work for www.pawar.ca<br>
+Pushes to this branch are auto-deployed to heroku at http://pawar.herokuapp.com
+
 ## Node.js + Sails framework
 #### Install node
 sudo apt-get install python-software-properties python g++ make
