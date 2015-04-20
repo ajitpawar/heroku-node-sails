@@ -1,11 +1,4 @@
 
-<!-- ============= bootstrap form validation ===============-->
-<!--
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
- -->
-
-<!-- ============= css ===============-->
 <style>
 	iframe {
 		width: 60%;
@@ -34,6 +27,9 @@
     display:inline;
     color:green;
     text-transform: uppercase;
+  }
+  #uploader{
+    width: 90%;
   }
 </style>
 
@@ -64,8 +60,12 @@
       				<div id="status2">
                 ok, your files will be uploaded to <div id="fname"> asddasd</div> folder
               </div>
-      				<div style="width:90%; height:350px; background-color:black; display:block"></div>
-      				<!-- <iframe src="http://plupload.herokuapp.com/upload.php"></iframe> -->
+      				<!-- <div style="width:90%; height:350px; background-color:black; display:block"></div> -->
+              <div id="uploader">
+                <p>Your browser doesn't support Flash or HTML5.<br>
+                  You might be unable to upload</p>
+              </div>
+
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@
             <form role="form" class="form-inline" data-toggle="validator">
       			  <div class="form-group">
       			     <label>Name</label>
-      			     <input type="text" pattern="^[a-z][A-Za-z0-9\-\_]+" class="form-control" id="newname" placeholder="">
+      			     <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" id="newname" placeholder="">
       			  </div>
       			  <button type="submit" class="btn btn-default">Submit</button>
               <div class="help-block with-errors"></div>
@@ -121,6 +121,45 @@ $(function(){
     var selected = $(this).find("option:selected").val();
     console.log(selected);
   });
+
+
+  /*************
+   Uploader
+   ************/
+  $("#uploader").plupload({
+    runtimes : 'html5,flash',
+    url : 'http://<%= s3Credentials.s3Bucket %>.s3.amazonaws.com/',
+
+    multipart: true,
+    multipart_params: {
+      'key': '${filename}', // use filename as a key
+      'Filename': '${filename}', // adding this to keep consistency across the runtimes
+      'acl': 'public-read',
+      'Content-Type': 'image/jpeg',
+      'AWSAccessKeyId' : '<%= s3Credentials.s3Key %>',
+      'policy': '<%= s3Credentials.s3PolicyBase64 %>',
+      'signature': '<%= s3Credentials.s3Signature %>'
+    },
+
+    // Resize not recommended with S3, since it will force Flash runtime
+    // into mode with NO PROGRESS INDICATION
+    // resize : {width : 1024, height : 768, quality : 100},
+
+    // optional, but better be specified directly
+    file_data_name: 'file',
+
+    filters : {
+      max_file_size : '5mb',
+      mime_types: [
+        {title : "Image files", extensions : "jpg,jpeg,png,gif"}
+      ]
+    },
+
+    // Flash settings
+    flash_swf_url : '/js/Moxie.swf'
+
+  });
+
 
 });
 

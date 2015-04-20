@@ -10,6 +10,10 @@ module.exports.routes = {
   '/login' : {
     controller : 'auth',
     action     : 'index'
-  }
+  },
 
+  '/upload' : {
+  	controller: 'upload',
+  	action: 'index'
+  }
 };
