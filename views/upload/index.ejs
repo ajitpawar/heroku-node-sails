@@ -1,13 +1,40 @@
 
+<!-- ============= bootstrap form validation ===============-->
+<!--
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
+ -->
+
+<!-- ============= css ===============-->
 <style>
 	iframe {
 		width: 60%;
 		height: 70%;
 		scrolling: no;
 		border: #fff;
-		margin-left: 20%;
+		margin-left: 20px;
     margin-top: 50px;
 	}
+	#status1 {
+		margin-top: 10px;
+    color: green;
+    /*font-style: italic;*/
+    font-size: 14px;
+	}
+	#status2 {
+		margin-bottom: 30px;
+    font-size: 15px;
+	}
+  #or{
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 40px
+  }
+  #fname {
+    display:inline;
+    color:green;
+    text-transform: uppercase;
+  }
 </style>
 
 <!-- ============= dropdown ===============-->
@@ -17,6 +44,7 @@
         <ul class="mainnav-menu">
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+          	</a>
           </li>
         </ul>
       </nav>
@@ -24,7 +52,76 @@
   </div>
 
 
+<!-- ============= body ===============-->
+<div class="content">
+    <div class="container">
 
-<!-- iframe -->
-<iframe src="http://plupload.herokuapp.com"></iframe>
+    <!-- LEFT -->
+      <div class="layout layout-stack-sm layout-main-left">
+        <div class="col-sm-7 col-md-8 layout-main">
+          <div class="portlet">
+            <div class="portlet-body">
+      				<div id="status2">
+                ok, your files will be uploaded to <div id="fname"> asddasd</div> folder
+              </div>
+      				<div style="width:90%; height:350px; background-color:black; display:block"></div>
+      				<!-- <iframe src="http://plupload.herokuapp.com/upload.php"></iframe> -->
+            </div>
+          </div>
+        </div>
 
+    <!-- RIGHT -->
+        <div class="col-sm-5 col-md-4 layout-sidebar">
+
+    		<h4>Create a new folder</h4>
+            <form role="form" class="form-inline" data-toggle="validator">
+      			  <div class="form-group">
+      			     <label>Name</label>
+      			     <input type="text" pattern="^[a-z][A-Za-z0-9\-\_]+" class="form-control" id="newname" placeholder="">
+      			  </div>
+      			  <button type="submit" class="btn btn-default">Submit</button>
+              <div class="help-block with-errors"></div>
+    		    </form>
+    		  <div id="status1">Note: Use only letters, numbers, dash, underscore</div>
+
+
+          <div id="or">
+            <h4>OR</h4>
+          </div>
+
+
+		  <h4>Upload to an existing folder</h4>
+          <div class="well">
+            <ul class="icons-list text-md">
+          		<select class="form-control">
+				  	<option>default</option>
+				  	<option>private</option>
+				  	<option>test</option>
+				</select>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+<script>
+$(function(){
+
+	$('.form-inline').on('submit', function (e) {
+	  e.preventDefault();
+	  var newname = $("#newname").val()
+	  console.log(newname);
+	});
+
+  $('.form-control').on('change', function(){
+    var selected = $(this).find("option:selected").val();
+    console.log(selected);
+  });
+
+});
+
+</script>
