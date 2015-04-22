@@ -9,15 +9,18 @@ var passport = require('passport');
 
 module.exports = {
 
-  index: function(req, res) {
-    res.view({user: req.user});         // if left empty, index.ejs rendered by default
-  },
-
   // OAuth2.0
   // https://developers.google.com/accounts/docs/OAuth2Login#scope-param
+
   google: function(req, res) {
+
+    if(req.header('Referer')){
+      req.session.backURL = req.header('Referer') || '/';
+    }
+
     passport.authenticate('google',
-      { failureRedirect: '/login',
+      {
+        failureRedirect: req.session.backURL,
         scope: ['https://www.googleapis.com/auth/plus.login',
                 'https://www.googleapis.com/auth/plus.profile.emails.read'],
         hd: 'pawar.ca'
@@ -26,12 +29,11 @@ module.exports = {
     function(err, user) {
       req.logIn(user, function(err) {
         if (err) {
-          //console.log(err);
-          res.view('500');
+          res.view('500');    // error occurred in google oauth login process
           return;
         }
 
-        res.redirect('/');
+        res.redirect(req.session.backURL || '/');    // rediect on successful login
         return;
       });
     })(req, res);

@@ -20,17 +20,21 @@
 	}
   #or{
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
     margin-bottom: 40px
   }
   #fname {
     display:inline;
-    color:green;
+    color:purple;
     text-transform: uppercase;
   }
   #uploader{
     width: 90%;
   }
+  h5 {
+    display:inline;
+  }
+
 </style>
 
 <!-- ============= dropdown ===============-->
@@ -57,9 +61,7 @@
         <div class="col-sm-7 col-md-8 layout-main">
           <div class="portlet">
             <div class="portlet-body">
-      				<div id="status2">
-                ok, your files will be uploaded to <div id="fname"> asddasd</div> folder
-              </div>
+      				<div style="width:90%" class="alert alert-info" role="alert">ok, your files will be uploaded to <h5>ASHSD</h5> folder</div>
       				<!-- <div style="width:90%; height:350px; background-color:black; display:block"></div> -->
               <div id="uploader">
                 <p>Your browser doesn't support Flash or HTML5.<br>
@@ -71,7 +73,7 @@
         </div>
 
     <!-- RIGHT -->
-        <div class="col-sm-5 col-md-4 layout-sidebar">
+      <div class="col-sm-5 col-md-4 layout-sidebar">
 
     		<h4>Create a new folder</h4>
             <form role="form" class="form-inline" data-toggle="validator">
@@ -95,10 +97,28 @@
             <ul class="icons-list text-md">
           		<select class="form-control">
 				  	<option>default</option>
-				  	<option>private</option>
 				  	<option>test</option>
 				</select>
             </ul>
+          </div>
+
+          <h4 style="margin-top:60px">Keep my files</h4>
+          <div class="well">
+            <ul class="icons-list text-md">
+      				<div class="radio">
+      				  <label>
+      				    <input type="radio" name="optionsRadios" id="optionsRadios1" value="public" checked="checked">
+      				     Public
+      				  </label>
+      				</div>
+      			    <div class="radio  <% if(!user){ %> enabled <% } %>">
+      				  <label>
+      				    <input type="radio" name="optionsRadios" id="optionsRadios2" value="private"
+      				    <% if(!user){ %> enabled <% } %> >
+      				    	Private (<a href="/auth/google">Login required</a>)
+      				    </label>
+      				</div>
+      			</ul>
           </div>
 
         </div>
@@ -108,18 +128,49 @@
   </div>
 
 
+<!-- bootstrap modal -->
+<!-- link: http://getbootstrap.com/javascript/#modals -->
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <button style="margin-top:10px" type="button" class="close" data-dismiss="modal" aria-hidden="true">X&nbsp;&nbsp;&nbsp;&nbsp;</button><br/>
+      <h4 style="margin-left:15px;color:purple"> You must <a href="/auth/google">login</a> first </h4>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- *************
+    Javascript
+  ***************** -->
 <script>
 $(function(){
 
+  // input form
 	$('.form-inline').on('submit', function (e) {
 	  e.preventDefault();
 	  var newname = $("#newname").val()
-	  console.log(newname);
+	  // console.log(newname);
 	});
 
+  // dropdown
   $('.form-control').on('change', function(){
     var selected = $(this).find("option:selected").val();
-    console.log(selected);
+    // console.log(selected);
+  });
+
+  // radio buttons
+  $('input[type=radio][name=optionsRadios]').change(function() {
+    if (this.value == 'private') {
+      <% if (!user) { %>
+        $('#myModal').modal();
+      <% } else { %>
+        window.location = "/upload/private";
+      <% } %>
+    }
+    else window.location = "/upload";
   });
 
 
