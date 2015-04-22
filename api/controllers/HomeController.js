@@ -8,8 +8,6 @@
 module.exports = {
 
   index: function(req, res) {
-    res.view({
-    	user: req.user
-    });
+    res.view('homepage', {layout: null});
   }
 };
