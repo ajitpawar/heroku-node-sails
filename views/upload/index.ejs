@@ -31,15 +31,39 @@
   h5 {
     display:inline;
     color:purple;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
   }
 </style>
 
 
-<div style="margin-top:50px"></div>
+
+<!-- ============= angular script ===============-->
+<script type="text/javascript">
+
+	// angular instantiate
+	var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngMessages']);
+
+	myApp.controller('myController', function($scope)
+	{
+	    $scope.dropvalues = ["default", "test1","test2"];
+
+	    // dropdown changed
+	    $scope.change = function() {
+	    	$scope.foldername = $scope.dropvalue;
+      	};
+
+      	// submit button
+      	$scope.submit = function(val) {
+      		$scope.foldername = val;
+      	};
+	});
+</script>
+
 
 <!-- ============= body ===============-->
-<div class="content">
+<div style="margin-top:50px"></div>
+
+<div class="content" ng-app="myApp" ng-controller="myController">
   <div class="container">
 
     <!-- LEFT -->
@@ -49,7 +73,7 @@
             <div class="portlet-body">
 
               <div id="message">
-                <div class="alert alert-success" role="alert">ok, your files will be uploaded to <h5>ASHSD</h5> folder</div>
+                <div class="alert alert-success" role="alert">your files will be uploaded to folder <h5>{{foldername}}</h5> </div>
               </div>
 
               <!-- Actual uploader gets attacehd here -->
@@ -67,18 +91,16 @@
 
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Create a new folder</h3>
+              <h3 class="panel-title">Upload to an existing folder</h3>
             </div>
             <div class="panel-body">
-              <form role="form" class="form-inline" data-toggle="validator">
-                  <div class="form-group">
-                     <label>Name</label>
-                     <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" id="newname" placeholder="">
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  <div class="help-block with-errors"></div>
-              </form>
-            <div id="note">Note: Use only letters, numbers, dash or underscore</div>
+              <ul class="icons-list text-md">
+                <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" ng-change="change()"
+                 class="form-control" style="width:70%">
+                 	<!-- angular inserts an empty value first. hide it like this -->
+                 	<option style="display:none" value=""></option>
+				</select>
+              </ul>
             </div>
           </div>
 
@@ -90,17 +112,20 @@
 
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Upload to an existing folder</h3>
+              <h3 class="panel-title">Create a new folder</h3>
             </div>
             <div class="panel-body">
-              <ul class="icons-list text-md">
-                <select class="form-control">
-                  <option>default</option>
-                  <option>test</option>
-                </select>
-              </ul>
+              <form role="form" class="form-inline" data-toggle="validator">
+                  <div class="form-group">
+                     <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" ng-model="formvalue" placeholder="enter new name">
+                  </div>
+                  <button type="submit" class="btn btn-default" ng-click="submit(formvalue)">Submit</button>
+                  <div class="help-block with-errors"></div>
+              </form>
+            <div id="note">Note: Use only letters, numbers, dash or underscore</div>
             </div>
           </div>
+
 
           <div class="panel panel-warning" style="margin-top:50px">
             <div class="panel-heading">
@@ -139,19 +164,20 @@
 <script>
 $(function(){
 
+
   // input form
-	$('.form-inline').on('submit', function (e) {
-	  e.preventDefault();
-	  var newname = $("#newname").val()
-	  // console.log(newname);
-	});
+	// $('.form-inline').on('submit', function (e) {
+	//   e.preventDefault();
+	//   var newname = $("#newname").val()
+	//   // console.log(newname);
+	// });
 
 
   // dropdown
-  $('.form-control').on('change', function(){
-    var selected = $(this).find("option:selected").val();
-    // console.log(selected);
-  });
+  // $('.form-control').on('change', function(){
+  //   var selected = $(this).find("option:selected").val();
+  //   // console.log(selected);
+  // });
 
 
   // radio buttons
