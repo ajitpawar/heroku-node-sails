@@ -21,17 +21,19 @@
     margin-top: 20px;
     margin-bottom: 20px
   }
-  #message {
-    width: 90%;
-  }
   #uploader{
     width: 90%;
-    margin-top: 30px;
+    margin-top: 20px;
   }
   h5 {
     display:inline;
     color:purple;
     /*text-transform: uppercase;*/
+  }
+  .btn-warning {
+    height: 18px;
+    font-size: 11px;
+    padding: 0 5px 0 5px;
   }
 </style>
 
@@ -43,6 +45,7 @@
 	// angular instantiate
 	var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngMessages']);
 
+  // controller
 	myApp.controller('myController', function($scope)
 	{
 	    $scope.dropvalues = ["default", "test1","test2"];
@@ -50,12 +53,12 @@
 	    // dropdown changed
 	    $scope.change = function() {
 	    	$scope.foldername = $scope.dropvalue;
-      	};
+      };
 
-      	// submit button
-      	$scope.submit = function(val) {
-      		$scope.foldername = val;
-      	};
+      // submit button
+      $scope.submit = function(val) {
+      	$scope.foldername = val;
+      };
 	});
 </script>
 
@@ -72,9 +75,7 @@
           <div class="portlet">
             <div class="portlet-body">
 
-              <div id="message">
-                <div class="alert alert-success" role="alert">your files will be uploaded to folder <h5>{{foldername}}</h5> </div>
-              </div>
+              <div ng-if="foldername" class="alert alert-success" role="alert" ng-style="{width: 40 + foldername.length + '%'}">ok, your files will be uploaded to <h5> {{foldername}}</h5> folder </div>
 
               <!-- Actual uploader gets attacehd here -->
               <div id="uploader">
@@ -119,7 +120,7 @@
                   <div class="form-group">
                      <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" ng-model="formvalue" placeholder="enter new name">
                   </div>
-                  <button type="submit" class="btn btn-default" ng-click="submit(formvalue)">Submit</button>
+                  <button type="submit" class="btn btn-info" ng-click="submit(formvalue)">Submit</button>
                   <div class="help-block with-errors"></div>
               </form>
             <div id="note">Note: Use only letters, numbers, dash or underscore</div>
@@ -143,7 +144,7 @@
                     <label>
                       <input type="radio" name="optionsRadios" id="optionsRadios2" value="private"
                       <% if(!user){ %> disabled <% } %> >
-                        Private (<a href="/auth/google">Login required</a>)
+                        Private <a href="/auth/google" class="btn btn-warning" role="button">Login required</a>
                       </label>
                   </div>
                 </ul>

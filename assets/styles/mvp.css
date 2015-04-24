@@ -3,13 +3,7 @@
 * MVP Ready - Lightweight & Responsive Admin Template
 *
 * ========================================================
-*
-* File: mvpready-admin.css, mvpready-admin-*.css
-* Theme Version: 1.1.0
-* Bootstrap Version: 3.1.1
-* Author: Jumpstart Themes
-* Website: http://mvpready.com
-*
+
 * ======================================================== */
 body {
   padding: 0;
@@ -47,6 +41,7 @@ body {
 .valign-bottom {
   vertical-align: bottom !important;
 }
+
 
 /* !Content */
 /* ----------------------------------------------- */
@@ -89,6 +84,8 @@ body {
   -webkit-box-shadow: inset -8px 0 15px -10px rgba(0, 0, 0, 0.2);
   box-shadow: inset -8px 0 15px -10px rgba(0, 0, 0, 0.2);
 }
+
+
 /* !Nav Layout */
 /* ----------------------------------------------- */
 .nav-layout-sidebar-skip {
@@ -154,162 +151,6 @@ body {
   margin-right: 0;
 }
 
-
-/* !Tables */
-/* ----------------------------------------------- */
-.table-bordered thead tr,
-.table-bordered tfoot tr {
-  background-color: #f2f2f2;
-  background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #eeeeee 100%);
-  background-image: linear-gradient(to bottom, #f9f9f9 0%, #eeeeee 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#ffeeeeee', GradientType=0);
-}
-.table-bordered thead tr th,
-.table-bordered tfoot tr th {
-  color: #444;
-  font-size: 12px;
-  font-weight: 800;
-  background-color: transparent;
-  border-bottom-width: 1px;
-  vertical-align: middle;
-}
-
-
-/* !Tabs */
-/* ----------------------------------------------- */
-.tab-content.stacked-content > .tab-pane {
-  padding-top: 0;
-}
-.nav-tabs,
-.nav-pills {
-  margin-bottom: 1.5em;
-}
-.nav-tabs .caret,
-.nav-pills .caret,
-.nav-tabs a:hover .caret,
-.nav-pills a:hover .caret {
-  border-top-color: #444;
-  border-bottom-color: #444;
-}
-.nav-pills.nav-stacked > li {
-  margin-right: 0;
-  margin-bottom: .5em;
-}
-.nav-pills.nav-stacked > li > a {
-  padding: 10px 15px;
-}
-.nav-pills > li {
-  margin-right: 6px;
-}
-.nav-pills > li > a {
-  padding: 5px 12px;
-  color: #444;
-  background-color: #eee;
-}
-.nav-pills > li > a:hover {
-  background-color: #e4e4e4;
-}
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
-  color: #fff;
-  background-color: #d74b4b;
-}
-.nav-pills > li.active .caret,
-.nav-pills > li.active a:hover .caret {
-  border-top-color: #fff;
-  border-bottom-color: #fff;
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  color: #d74b4b;
-  font-weight: 600;
-}
-.nav-tabs > li > a {
-  color: #444;
-}
-.nav-tabs .open > a,
-.nav-tabs .open > a:hover,
-.nav-tabs .open > a:focus {
-  background-color: #eeeeee;
-  border-color: #d74b4b;
-}
-
-
-/* !Key/Value Table */
-/* ----------------------------------------------- */
-.keyvalue-table > tbody > tr > td {
-  vertical-align: middle;
-  padding-top: 11px;
-  padding-bottom: 11px;
-  border-top: none;
-  border-bottom: 1px solid #ddd;
-}
-.kv-key {
-  color: #555;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-.kv-icon {
-  position: relative;
-  top: 1px;
-  width: 30px;
-  height: 30px;
-  margin-right: .75em;
-  color: #444;
-  font-size: 15px;
-  text-align: center;
-  line-height: 30px;
-  background-color: #eee;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.kv-icon-default {
-  background-color: #fff;
-  color: #555;
-  border: 1px solid #ccc;
-}
-.kv-icon-primary {
-  background-color: #d74b4b;
-  color: #fff;
-}
-.kv-icon-secondary {
-  background-color: #6685a4;
-  color: #fff;
-}
-.kv-icon-tertiary {
-  background-color: #bcbcbc;
-  color: #fff;
-}
-.kv-icon-success {
-  background-color: #5cb85c;
-  color: #fff;
-}
-.kv-icon-info {
-  background-color: #5bc0de;
-  color: #fff;
-}
-.kv-icon-danger {
-  background-color: #d9534f;
-  color: #fff;
-}
-.kv-icon-warning {
-  background-color: #f0ad4e;
-  color: #fff;
-}
-.kv-value {
-  font-size: 18px;
-  font-weight: 600;
-  text-align: right;
-}
-.lt-ie9 .kv-value {
-  font-size: 15px;
-}
 
 /* !Navbar */
 /* ----------------------------------------------- */
@@ -710,6 +551,8 @@ body {
 .footer a {
   color: #a0b6c9;
 }
+
+
 /* !Sticky Footer */
 /* ----------------------------------------------- */
 html,

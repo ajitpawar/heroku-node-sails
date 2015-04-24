@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%- title %></title>
+    <title><%- title || "pawar.ca" %></title>
 
     <!-- Viewport mobile support -->
     <meta charset="utf-8">
@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/font-awesome.min.css">
-    <link rel="stylesheet" href="/styles/jquery.ui.plupload.css">
-    <link rel="stylesheet" href="/styles/mvpready-admin.css">
+    <link rel="stylesheet" href="/styles/mvp.css">
+    <link rel="stylesheet" href="/styles/plupload.css">
     <!--STYLES END-->
 
 
@@ -46,7 +47,6 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
 
     <!--SCRIPTS-->
-    <script src="/js/sails.io.js"></script>
     <script src="/js/plupload.full.min.js"></script>
     <script src="/js/jquery.ui.plupload.js"></script>
     <script src="/js/angular-toastr.js"></script>
