@@ -104,9 +104,9 @@ function buildPlupload(s3Credentials){
       'Filename': '${filename}', 	// adding this to keep consistency across the runtimes
       'acl': 'public-read',
       'Content-Type': 'image/jpeg',
-      'AWSAccessKeyId' : "'"+s3Credentials.s3Key+"'",
-      'policy': "'"+s3Credentials.s3PolicyBase64+"'",
-      'signature': "'"+s3Credentials.s3Signature+"'"
+      'AWSAccessKeyId' : s3Credentials.s3Key,
+      'policy': s3Credentials.s3PolicyBase64,
+      'signature': s3Credentials.s3Signature
     },
 
     // Resize not recommended with S3, since it will force Flash runtime
