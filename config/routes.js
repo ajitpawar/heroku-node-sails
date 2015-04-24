@@ -6,12 +6,9 @@ module.exports.routes = {
       if user session is not authenticated then they get redirected to "/login"
     ************/
 
-  '/' : {
-    controller : 'home'
-  },
-
-  '/403' : {
-  	view : '403'
-  }
+  '/' : {controller: 'home'},
+  '/403' : {view: '403'},
+  'get /upload/Public'  : 'UploadController.public',
+  'get /upload/Private' : 'UploadController.private',
 
 };

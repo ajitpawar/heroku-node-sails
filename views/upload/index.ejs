@@ -43,22 +43,51 @@
 <script type="text/javascript">
 
 	// angular instantiate
-	var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngMessages']);
+	var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngSanitize']);
 
-  // controller
-	myApp.controller('myController', function($scope)
+	// controller
+	myApp.controller('myController', function($scope, $http)
 	{
-	    $scope.dropvalues = ["default", "test1","test2"];
+		// set default values
+		$scope.privacy = 'Public';
 
-	    // dropdown changed
-	    $scope.change = function() {
-	    	$scope.foldername = $scope.dropvalue;
-      };
+		// get folders from AWS S3
+		$scope.dropvalues = ["default", "test1","test2"];
 
-      // submit button
-      $scope.submit = function(val) {
-      	$scope.foldername = val;
-      };
+    // submit button clicked
+		$scope.submit = function() {
+			$scope.foldername = $scope.formvalue;
+		};
+
+    // dropdown listener
+		$scope.$watch('dropvalue', function(){
+			$scope.foldername = $scope.dropvalue;
+		});
+
+    // radio button listener
+		$scope.$watch('privacy', function()
+    {
+      $http.get('/upload/'+$scope.privacy)
+        .success(function(response) {
+
+          $scope.notAuthenticated = response.data.notAuthenticated;
+
+          if(response.data.notAuthenticated){
+            $scope.errorMssg = '<h4>Oops! You must be logged in first';
+            $("#uploader").hide();
+            return;
+          }
+
+          $scope.errorMssg = null;
+          $("#uploader").show();
+          $("#uploader").plupload(response.data.plupload);
+      })
+        .error(function(response) {
+          $scope.errorMssg =
+          "<h4>Oops! Failed to load the uploader</h4><br/><p>Server Error: "+response+"</p>";
+        });
+		});
+
 	});
 </script>
 
@@ -75,12 +104,17 @@
           <div class="portlet">
             <div class="portlet-body">
 
-              <div ng-if="foldername" class="alert alert-success" role="alert" ng-style="{width: 40 + foldername.length + '%'}">ok, your files will be uploaded to <h5> {{foldername}}</h5> folder </div>
+              <div ng-if="errorMssg" class="alert alert-danger fade in" role="alert" style="width:60%">
+    		  	    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    		  	    <div ng-bind-html="errorMssg"></div>
+                <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a></p>
+  		        </div>
+
+              <div ng-if="foldername" ng-model="mssg" class="alert alert-success" role="alert" ng-style="{width: 40 + foldername.length + '%'}">your files will be uploaded to <h5> {{foldername}}</h5> folder </div>
 
               <!-- Actual uploader gets attacehd here -->
               <div id="uploader">
-                <p>Your browser doesn't support Flash or HTML5.<br>
-                  You might be unable to upload files with this browser version</p>
+
               </div>
 
             </div>
@@ -96,9 +130,8 @@
             </div>
             <div class="panel-body">
               <ul class="icons-list text-md">
-                <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" ng-change="change()"
-                 class="form-control" style="width:70%">
-                 	<!-- angular inserts an empty value first. hide it like this -->
+                <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" class="form-control" style="width:70%">
+                <!-- angular inserts an empty value first. hide it like this -->
                  	<option style="display:none" value=""></option>
 				</select>
               </ul>
@@ -120,7 +153,7 @@
                   <div class="form-group">
                      <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" ng-model="formvalue" placeholder="enter new name">
                   </div>
-                  <button type="submit" class="btn btn-info" ng-click="submit(formvalue)">Submit</button>
+                  <button type="submit" class="btn btn-info" ng-click="submit()">Submit</button>
                   <div class="help-block with-errors"></div>
               </form>
             <div id="note">Note: Use only letters, numbers, dash or underscore</div>
@@ -135,17 +168,11 @@
             <div class="panel-body">
               <ul class="icons-list text-md">
                   <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="public" checked="checked">
-                       Public
-                    </label>
+            		<label>
+            		<input type="radio" ng-model="privacy" value="Public" checked="checked">Public</label>
                   </div>
-                    <div class="radio  <% if(!user){ %> disabled <% } %>">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="private"
-                      <% if(!user){ %> disabled <% } %> >
-                        Private <a href="/auth/google" class="btn btn-warning" role="button">Login required</a>
-                      </label>
+                  <div class="radio">
+                    <label><input type="radio" value="Private" ng-model="privacy" >Private</label>
                   </div>
                 </ul>
             </div>
@@ -157,81 +184,5 @@
     </div>
   </div>
 
+<!-- <a href="/auth/google" class="btn btn-warning" role="button">Login required</a> -->
 
-
-<!-- *************
-    Javascript
-  ***************** -->
-<script>
-$(function(){
-
-
-  // input form
-	// $('.form-inline').on('submit', function (e) {
-	//   e.preventDefault();
-	//   var newname = $("#newname").val()
-	//   // console.log(newname);
-	// });
-
-
-  // dropdown
-  // $('.form-control').on('change', function(){
-  //   var selected = $(this).find("option:selected").val();
-  //   // console.log(selected);
-  // });
-
-
-  // radio buttons
-  $('input[type=radio][name=optionsRadios]').change(function() {
-    if (this.value == 'private') {
-      <% if (!user) { %>
-        // $('#myModal').modal();
-      <% } else { %>
-        window.location = "/upload/private";
-      <% } %>
-    }
-    else window.location = "/upload";
-  });
-
-
-  /*************
-   Uploader
-   ************/
-  $("#uploader").plupload({
-    runtimes : 'html5,flash',
-    url : 'http://<%= s3Credentials.s3Bucket %>.s3.amazonaws.com/',
-
-    multipart: true,
-    multipart_params: {
-      'key': '${filename}', // use filename as a key
-      'Filename': '${filename}', // adding this to keep consistency across the runtimes
-      'acl': 'public-read',
-      'Content-Type': 'image/jpeg',
-      'AWSAccessKeyId' : '<%= s3Credentials.s3Key %>',
-      'policy': '<%= s3Credentials.s3PolicyBase64 %>',
-      'signature': '<%= s3Credentials.s3Signature %>'
-    },
-
-    // Resize not recommended with S3, since it will force Flash runtime
-    // into mode with NO PROGRESS INDICATION
-    // resize : {width : 1024, height : 768, quality : 100},
-
-    // optional, but better be specified directly
-    file_data_name: 'file',
-
-    filters : {
-      max_file_size : '5mb',
-      mime_types: [
-        {title : "Image files", extensions : "jpg,jpeg,png,gif"}
-      ]
-    },
-
-    // Flash settings
-    flash_swf_url : '/js/Moxie.swf'
-
-  });
-
-
-});
-
-</script>
