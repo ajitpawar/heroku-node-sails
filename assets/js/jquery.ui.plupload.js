@@ -213,7 +213,7 @@ function renderUI(obj) {
 				'<div class="ui-state-default ui-widget-header plupload_header">' +
 					'<div class="plupload_header_content">' +
 						'<div class="plupload_logo"> </div>' +
-						'<div class="plupload_header_title">' + _("Upload Files") + '</div>' +
+						'<div class="plupload_header_title">' + _("Uploader") + '</div>' +
 						'<div class="plupload_header_text">' + _("powered by plupload") + '</div>' +
 						'<div class="plupload_view_switch">' +
 							'<input type="radio" id="'+obj.id+'_view_list" name="view_mode_'+obj.id+'" checked="checked" /><label class="plupload_button" for="'+obj.id+'_view_list" data-view="list">' + _('List') + '</label>' +
@@ -232,7 +232,7 @@ function renderUI(obj) {
 				'</table>' +
 
 				'<div class="plupload_content">' +
-					'<div class="plupload_droptext">' + _("Drag files here.") + '</div>' +
+					'<div class="plupload_droptext">' + _("Drag-and-drop files here or click Add button below") + '</div>' +
 					'<ul class="plupload_filelist_content"> </ul>' +
 					'<div class="plupload_clearer">&nbsp;</div>' +
 				'</div>' +
@@ -451,11 +451,11 @@ $.widget("ui.plupload", {
 
 			switch (err.code) {
 				case plupload.FILE_EXTENSION_ERROR:
-					details = o.sprintf(_("File: %s"), err.file.name);
+					details = o.sprintf(_("Upload failed. Incorrect file extension: %s"), err.file.name);
 					break;
 
 				case plupload.FILE_SIZE_ERROR:
-					details = o.sprintf(_("File: %s, size: %d, max file size: %d"), err.file.name,  plupload.formatSize(err.file.size), plupload.formatSize(plupload.parseSize(up.getOption('filters').max_file_size)));
+					details = o.sprintf(_("Size of this file is %d. Max size permitted is %d."), plupload.formatSize(err.file.size), plupload.formatSize(plupload.parseSize(up.getOption('filters').max_file_size)));
 					break;
 
 				case plupload.FILE_DUPLICATE_ERROR:
@@ -480,7 +480,7 @@ $.widget("ui.plupload", {
 					break;	*/
 
 				case plupload.HTTP_ERROR:
-					details = _("Upload URL might be wrong or doesn't exist.");
+					details = _("Amazon rejected this upload.");
 					break;
 			}
 

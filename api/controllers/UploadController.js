@@ -34,8 +34,8 @@ module.exports = {
   // private S3 bucket
   private: function (req, res) {
   	 var data = {"plupload": null,
-				        "s3Credentials": null,
-				        "notAuthenticated": false
+		        "s3Credentials": null,
+		        "notAuthenticated": false
 			};
 
   	if(!req.isAuthenticated()){		// server-side check for user auth
@@ -70,7 +70,7 @@ function buildS3(bucket,accesskey,secret){
 		  {"bucket": bucket},
 		  {"acl": "public-read"},
 		  ["starts-with", "$key", ""],
-		  ["starts-with", "$Content-Type", "image/"],
+		  ["starts-with", "$Content-Type", ""],
 		  ["starts-with", "$name", ""],
 		  ["starts-with", "$Filename", ""]
 		]
@@ -94,8 +94,8 @@ function buildS3(bucket,accesskey,secret){
 // build the plupload object
 function buildPlupload(s3Credentials){
 
-  var plup =
-  {
+  var plup = {
+
     runtimes : 'html5,flash',
     url : 'http://'+s3Credentials.s3Bucket+'.s3.amazonaws.com/',
     multipart: true,
@@ -103,7 +103,7 @@ function buildPlupload(s3Credentials){
       'key': '${filename}', 		// use filename as a key
       'Filename': '${filename}', 	// adding this to keep consistency across the runtimes
       'acl': 'public-read',
-      'Content-Type': 'image/jpeg',
+      'Content-Type': 'binary/octet-stream',
       'AWSAccessKeyId' : s3Credentials.s3Key,
       'policy': s3Credentials.s3PolicyBase64,
       'signature': s3Credentials.s3Signature
@@ -113,20 +113,101 @@ function buildPlupload(s3Credentials){
     // into mode with NO PROGRESS INDICATION
     // resize : {width : 1024, height : 768, quality : 100},
 
-    // optional, but better be specified directly
+    flash_swf_url : '/js/Moxie.swf',
     file_data_name: 'file',
+
     filters : {
-      max_file_size : '5mb',
+      max_file_size : '1mb',
       mime_types: [
-        {title : "Image files", extensions : "jpg,jpeg,png,gif"}
+        {title : "All files", extensions : getExtensions()}
       ]
     },
 
-    // Flash settings
-    flash_swf_url : '/js/Moxie.swf'
+    preinit : {
+      Init: null,
+      UploadFile: null
+
+      // function(up,file) {
+
+      //   // Get extension
+      //   var arr = file.name.split('.');
+      //   var ext = arr[arr.length-1];
+      //   var mime = mime_types[ext] ? mime_types[ext] : 'application/octet-stream';
+      //   up.settings.multipart_params['Content-Type'] = mime;
+
+      //   // Prefix filename with "prefix"
+      //   up.settings.multipart_params['key'] = parseFilename(file.name);
+      // }
+    },
+
+    init : {
+      UploadComplete: null,
+      Error: null
+    }
+
   }
 
   return plup;
 }
 
+
+function getExtensions() {
+	var exts = [];
+	for(key in mime){
+		exts.push(key);
+	}
+	return exts.join();
+}
+
+
+var mime = {
+    '3gp' : 'video/3gpp',
+    'avi' : 'video/x-msvideo',
+    'bmp' : 'image/bmp',
+    'djv' : 'image/vnd.djvu',
+    'djvu' : 'image/vnd.djvu',
+    'dmg' : 'application/octet-stream',
+    'doc' : 'application/msword',
+    'dvi' : 'application/x-dvi',
+   	'flv' : 'video/x-flv',
+    'gif' : 'image/gif',
+    'gz' : 'application/x-gzip',
+    'ico' : 'image/x-icon',
+    'jpeg' : 'image/jpeg',
+    'jpg' : 'image/jpeg',
+    'latex' : 'application/x-latex',
+    'm3u' : 'audio/x-mpegurl',
+    'm4a' : 'audio/mp4a-latm',
+    'm4p' : 'audio/mp4a-latm',
+    'm4u' : 'video/vnd.mpegurl',
+    'm4v' : 'video/x-m4v',
+    'mid' : 'audio/midi',
+    'midi' : 'audio/midi',
+    'mov' : 'video/quicktime',
+    'mp2' : 'audio/mpeg',
+    'mp3' : 'audio/mpeg',
+    'mp4' : 'video/mp4',
+    'mpeg' : 'video/mpeg',
+    'mpg' : 'video/mpeg',
+    'mpga' : 'audio/mpeg',
+    'ogg' : 'application/ogg',
+    'ogv' : 'video/ogv',
+    'pdf' : 'application/pdf',
+    'png' : 'image/png',
+    'ppt' : 'application/vnd.ms-powerpoint',
+    'qt' : 'video/quicktime',
+    'qti' : 'image/x-quicktime',
+    'qtif' : 'image/x-quicktime',
+    'ra' : 'audio/x-pn-realaudio',
+    'ram' : 'audio/x-pn-realaudio',
+    'rm' : 'application/vnd.rn-realmedia',
+    'swf' : 'application/x-shockwave-flash',
+    'tar' : 'application/x-tar',
+    'txt' : 'text/plain',
+    'wav' : 'audio/x-wav',
+    'webm' : 'video/webm',
+    'wmv' : 'video/x-ms-wmv',
+    'xls' : 'application/vnd.ms-excel',
+    'zip' : 'application/zip'
+  };
 

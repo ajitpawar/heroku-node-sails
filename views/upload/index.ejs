@@ -3,19 +3,19 @@
   body {
     overflow: hidden;
   }
-	iframe {
-		width: 60%;
-		height: 70%;
-		border: #fff;
-		margin-left: 20px;
+  iframe {
+    width: 60%;
+    height: 70%;
+    border: #fff;
+    margin-left: 20px;
     margin-top: 50px;
-	}
-	#note {
-		margin-top: 15px;
+  }
+  #note {
+    margin-top: 15px;
     color: green;
     /*font-style: italic;*/
     font-size: 13px;
-	}
+  }
   #or{
     text-align: center;
     margin-top: 20px;
@@ -25,11 +25,11 @@
     width: 90%;
     margin-top: 20px;
   }
-  h5 {
+  /*h5 {
     display:inline;
     color:purple;
-    /*text-transform: uppercase;*/
-  }
+    text-transform: uppercase;
+  }*/
   .btn-warning {
     height: 18px;
     font-size: 11px;
@@ -43,60 +43,96 @@
 <!-- ============= angular script ===============-->
 <script type="text/javascript">
 
-	// angular instantiate
-	var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngSanitize']);
+  // angular instantiate
+  var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngSanitize']);
 
-	// controller
-	myApp.controller('myController', function($scope, $http)
-	{
-		// set default values
-		$scope.privacy = 'Public';
+  // controller
+  myApp.controller('mainController', function($scope, $http, $timeout)
+  {
+    // set default values
+    $scope.privacy = 'Public';
+    $scope.dropvalues = ["default", "test1","test2"];
 
-		// get folders from AWS S3
-		$scope.dropvalues = ["default", "test1","test2"];
+    // submit button listener
+    $scope.submit = function() {
+      $scope.foldername = $scope.formvalue;
+    };
 
-    // submit button clicked
-		$scope.submit = function() {
-			$scope.foldername = $scope.formvalue;
-		};
+    // dropdown bar listener
+    $scope.$watch('dropvalue', function(){
+      $scope.foldername = $scope.dropvalue;
+    });
 
-    // dropdown listener
-		$scope.$watch('dropvalue', function(){
-			$scope.foldername = $scope.dropvalue;
-		});
+    $scope.$watch('foldername', function(){
+      $scope.mssgType = 'success';
+      $scope.mssg = "ok, your files will be uploaded to <b>"+ $scope.foldername +"</b> folder";
+    });
+
 
     // radio button listener
-		$scope.$watch('privacy', function()
+    $scope.$watch('privacy', function()
     {
       $http.get('/upload/'+$scope.privacy)
-        .success(function(response) {
+      .success(function(response) {
 
           $scope.notAuthenticated = response.data.notAuthenticated;
           $("#uploader").remove();
 
           if(response.data.notAuthenticated){
-            $scope.errorMssg = '<h4>Oops! You must be logged in first';
+            $scope.mssgType = 'danger';
+            $scope.mssg = '<h5><b>Oops! You must be logged in first</b></h5>';
             return;
           }
 
-          $scope.errorMssg = null;
+          $scope.mssg = null;
           $("#static").append('<div id="uploader"></div>');
-          $("#uploader").plupload(response.data.plupload);
+          attachListeners(response.data.plupload,$scope,$timeout);
+          $("#uploader").plupload(response.data.plupload);  // attach plupload
       })
-        .error(function(response) {
-          $scope.errorMssg =
-          "<h4>Oops! Failed to load the uploader</h4><br/><p>Server Error: "+response+"</p>";
-        });
-		});
+      .error(function(response) {
+          $scope.mssgType = 'danger';
+          $scope.mssg =
+          "<h5><b>Oops! Failed to load the uploader</b></h5>Server Error: "+response;
+      });
+    });
 
-	});
+
+    function attachListeners(instance,scope,timeout)
+    {
+        instance.init.UploadComplete = function(){
+          scope.mssgType = 'success';
+          scope.mssg = "<h5><b>Success!</b></h5>All files uploaded successfully";
+          timeout(function(){ scope.mssg=null; }, 7000);
+          scope.$digest();
+        }
+
+        instance.init.Error = function(plup, args){
+          scope.mssgType = 'danger';
+          scope.mssg = "<h5><b>Error</b></h5>"+args.message;
+          scope.$digest();
+        }
+
+        instance.preinit.UploadFile = function(plup, file){
+          if(!scope.foldername){
+            scope.foldername = 'default';
+            scope.$digest();
+          }
+          plup.settings.multipart_params['key'] = scope.foldername+'/'+file.name;
+        }
+
+        instance.preinit.Init = function(plup, info){
+          console.log('prinint.init called');
+        }
+    }
+
+  });
 </script>
 
 
 <!-- ============= body ===============-->
 <div style="margin-top:50px"></div>
 
-<div class="content" ng-app="myApp" ng-controller="myController">
+<div class="content" ng-app="myApp" ng-controller="mainController">
   <div class="container">
 
     <!-- LEFT -->
@@ -106,14 +142,10 @@
             <div class="portlet-body">
 
               <!-- Error messages -->
-              <div ng-if="errorMssg" class="alert alert-danger fade in" role="alert" style="width:60%">
-    		  	    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    		  	    <div ng-bind-html="errorMssg"></div>
-                <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a></p>
-  		        </div>
-
-              <!-- mssg regarding destination folder -->
-              <div ng-if="foldername" ng-model="mssg" class="alert alert-success" role="alert" ng-style="{width: 40 + foldername.length + '%'}">your files will be uploaded to <h5> {{foldername}}</h5> folder </div>
+              <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: mssg.length + '%'}">
+                <div ng-bind-html="mssg"></div>
+                <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a>
+              </div>
 
               <!-- Actual uploader gets attached here -->
               <div id="static">
@@ -135,15 +167,15 @@
               <ul class="icons-list text-md">
                 <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" class="form-control" style="width:70%">
                 <!-- angular inserts an empty value first. hide it like this -->
-                 	<option style="display:none" value=""></option>
-				        </select>
+                  <option style="display:none" value=""></option>
+                </select>
               </ul>
             </div>
           </div>
 
 
           <div id="or">
-            <h4>OR</h4>
+            <h5><b>OR</b></h5>
           </div>
 
 
@@ -159,7 +191,7 @@
                   <button type="submit" class="btn btn-info" ng-click="submit()">Submit</button>
                   <div class="help-block with-errors"></div>
               </form>
-            <div id="note">Note: Use only letters, numbers, dash or underscore</div>
+            <div id="note">Note: Use only letters, digits, dash or underscore</div>
             </div>
           </div>
 
@@ -171,8 +203,8 @@
             <div class="panel-body">
               <ul class="icons-list text-md">
                   <div class="radio">
-            		<label>
-            		<input type="radio" ng-model="privacy" value="Public" checked="checked">Public</label>
+                <label>
+                <input type="radio" ng-model="privacy" value="Public" checked="checked">Public</label>
                   </div>
                   <div class="radio <% if(!user){ %> disabled <% } %>">
                     <label><input type="radio" value="Private" ng-model="privacy" <% if(!user){ %> disabled <% } %> >Private</label>
@@ -187,4 +219,3 @@
       </div>
     </div>
   </div>
-

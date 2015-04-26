@@ -8,7 +8,7 @@ module.exports.routes = {
 
   '/' : {controller: 'home'},
   '/403' : {view: '403'},
-  'get /upload/Public'  : 'UploadController.public',
-  'get /upload/Private' : 'UploadController.private',
+  '/upload/Public'  : 'UploadController.public',
+  '/upload/Private' : 'UploadController.private',
 
 };
