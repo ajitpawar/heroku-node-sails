@@ -25,11 +25,6 @@
     width: 90%;
     margin-top: 20px;
   }
-  /*h5 {
-    display:inline;
-    color:purple;
-    text-transform: uppercase;
-  }*/
   .btn-warning {
     height: 18px;
     font-size: 11px;
@@ -64,8 +59,10 @@
     });
 
     $scope.$watch('foldername', function(){
-      $scope.mssgType = 'success';
-      $scope.mssg = "ok, your files will be uploaded to <b>"+ $scope.foldername +"</b> folder";
+      if($scope.foldername){
+        $scope.mssgType = 'success';
+        $scope.mssg = "ok, your files will be uploaded to <b>"+ $scope.foldername +"</b> folder";
+      }
     });
 
 
@@ -74,7 +71,6 @@
     {
       $http.get('/upload/'+$scope.privacy)
       .success(function(response) {
-
           $scope.notAuthenticated = response.data.notAuthenticated;
           $("#uploader").remove();
 
@@ -84,9 +80,9 @@
             return;
           }
 
-          $scope.mssg = null;
+          // $scope.mssg=null;
           $("#static").append('<div id="uploader"></div>');
-          attachListeners(response.data.plupload,$scope,$timeout);
+          attachListeners(response.data.plupload,$scope,$timeout,$http);
           $("#uploader").plupload(response.data.plupload);  // attach plupload
       })
       .error(function(response) {
@@ -97,12 +93,12 @@
     });
 
 
-    function attachListeners(instance,scope,timeout)
+    function attachListeners(instance,scope,timeout,http)
     {
         instance.init.UploadComplete = function(){
           scope.mssgType = 'success';
           scope.mssg = "<h5><b>Success!</b></h5>All files uploaded successfully";
-          timeout(function(){ scope.mssg=null; }, 7000);
+          timeout(function(){ scope.mssg=null; }, 6000);
           scope.$digest();
         }
 
@@ -118,10 +114,6 @@
             scope.$digest();
           }
           plup.settings.multipart_params['key'] = scope.foldername+'/'+file.name;
-        }
-
-        instance.preinit.Init = function(plup, info){
-          console.log('prinint.init called');
         }
     }
 

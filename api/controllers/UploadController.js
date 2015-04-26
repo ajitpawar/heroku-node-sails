@@ -117,34 +117,20 @@ function buildPlupload(s3Credentials){
     file_data_name: 'file',
 
     filters : {
-      max_file_size : '1mb',
+      max_file_size : '100mb',
       mime_types: [
         {title : "All files", extensions : getExtensions()}
       ]
     },
 
     preinit : {
-      Init: null,
       UploadFile: null
-
-      // function(up,file) {
-
-      //   // Get extension
-      //   var arr = file.name.split('.');
-      //   var ext = arr[arr.length-1];
-      //   var mime = mime_types[ext] ? mime_types[ext] : 'application/octet-stream';
-      //   up.settings.multipart_params['Content-Type'] = mime;
-
-      //   // Prefix filename with "prefix"
-      //   up.settings.multipart_params['key'] = parseFilename(file.name);
-      // }
     },
 
     init : {
       UploadComplete: null,
       Error: null
     }
-
   }
 
   return plup;
