@@ -30,9 +30,11 @@ var jsFilesToInject = [
   'js/plupload.full.min.js',
   'js/jquery.ui.plupload.js',
 
+  //browserified libraries
+  'js/browserify-include.js',
+
   // angular controllers
   'angular/*.js',
-  'angular/*.js.map',
 
   // all other js files
   'js/**/*.js'
@@ -66,3 +68,5 @@ module.exports.jsFilesToInject = jsFilesToInject.map(function(path) {
 module.exports.templateFilesToInject = templateFilesToInject.map(function(path) {
   return 'assets/' + path;
 });
+
+

@@ -6,68 +6,113 @@
  */
 
 var crypto = require('crypto');
+var AWS = require('aws-sdk');
 
+/**************************
+  AWS S3 config
+*****************************/
+  var configAWSPublic = {
+    bucket : "pawar-public",
+    accesskey : 'AKIAJGSWPKNHWLJ5A2DA',
+    secret : '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',
+    region : 'us-east-1'
+  };
+
+  var configAWSPrivate = {
+    bucket : "pawar-private",
+    accesskey : 'AKIAI4INPNGNP3TQOKBQ',
+    secret : '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',
+    region : 'us-east-1'
+  };
+
+
+
+/**************************
+  Controller
+*****************************/
 module.exports = {
 
-  index: function (req, res) {
-    res.view({user: req.user});
+  // index page
+  index: function (req, res){
+      res.view({user: req.user});
   },
 
   // public S3 bucket
-  public: function (req, res) {
-    var data = {"plupload": null,
-                "s3Credentials": null,
-                "notAuthenticated": false
-    };
+  public: function (req, res)
+  {
+    var config = getAWSConfig("Public");
+  	var s3Cred = buildS3(config);
+    var plupload = buildPlupload(s3Cred);
 
-  	var bucket = "pawar-public";
-  	var accesskey = 'AKIAJGSWPKNHWLJ5A2DA';
-	  var secret = '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';
-
-  	var s3Cred = buildS3(bucket,accesskey,secret);
-    data.s3Credentials = s3Cred;
-    data.plupload = buildPlupload(s3Cred);
-    res.send({user: req.user, data: data});
+    getS3Folders(config,req,res,s3Cred,plupload);
   },
 
 
   // private S3 bucket
-  private: function (req, res) {
-  	 var data = {"plupload": null,
-		        "s3Credentials": null,
-		        "notAuthenticated": false
-			};
-
-  	if(!req.isAuthenticated()){		// server-side check for user auth
-  		data.notAuthenticated = true;
-  	}
-  	else{
-  		var bucket = "pawar-private";
-  		var accesskey = 'AKIAI4INPNGNP3TQOKBQ';
-		  var secret = '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';
-
-  		var s3Cred = buildS3(bucket,accesskey,secret);
-  		data.s3Credentials = s3Cred;
-  		data.plupload = buildPlupload(s3Cred);
+  private: function (req, res)
+  {
+    // not authenticated
+  	if(!req.isAuthenticated()){
+      var data = {plupload:null, s3Credentials:null, notAuthenticated: true};
+      var folders = {mssg:"You are not logged in", data:null};
+      res.send({user:req.user, data:data, folders:folders});
+      return;
   	}
 
-  	res.send({user: req.user, data: data});
+    // authenticated
+    var config = getAWSConfig("Private");
+    var s3Cred = buildS3(config);
+    var plupload = buildPlupload(s3Cred);
+
+    getS3Folders(config,req,res,s3Cred,plupload);
   }
 
 };
 
 
 
+/**************************
+  Helper functions
+*****************************/
+function getAWSConfig(privacy){
+  var config = (privacy == 'Private') ? configAWSPrivate : configAWSPublic;
+  return config;
+}
+
+
+function getS3Folders(config,req,res,s3Cred,plupload){
+
+    AWS.config.region = config.region;
+    AWS.config.credentials =
+      new AWS.Credentials({accessKeyId: config.accesskey, secretAccessKey: config.secret});
+
+    var data = {plupload: plupload, s3Credentials: s3Cred, notAuthenticated: false};
+    var folders = {mssg: null, data: null};
+    var s3 = new AWS.S3();
+    var params = {Bucket: config.bucket, Delimiter: '/'};
+
+    // get "folders" from S3
+    s3.listObjects(params, function(err, d) {
+      if (err) folders.mssg = err.message;
+      else{
+        folders.data = d.CommonPrefixes;
+      }
+
+      res.send({user:req.user, data:data, folders:folders});
+
+    });
+}
+
 
 // helper function to create AWS S3 policy
-function buildS3(bucket,accesskey,secret){
+function buildS3(config){
 
 	var date = new Date();
 
 	var s3Policy = {
 	"expiration": "" + (date.getFullYear()) + "-" + (date.getMonth() + 1) + "-" + (date.getDate()) + "T" + (date.getHours() + 1) + ":" + (date.getMinutes()) + ":" + (date.getSeconds()) + "Z",
 	"conditions": [
-		  {"bucket": bucket},
+		  {"bucket": config.bucket},
 		  {"acl": "public-read"},
 		  ["starts-with", "$key", ""],
 		  ["starts-with", "$Content-Type", ""],
@@ -77,13 +122,13 @@ function buildS3(bucket,accesskey,secret){
 	};
 
 	var base64 = new Buffer(JSON.stringify(s3Policy)).toString('base64');
-	var sign = crypto.createHmac("sha1", secret).update(base64).digest("base64");
+	var sign = crypto.createHmac("sha1", config.secret).update(base64).digest("base64");
 
 	var s3Credentials = {
 	    s3PolicyBase64: base64,
 	    s3Signature: sign,
-	    s3Key: accesskey,
-	    s3Bucket: bucket
+	    s3Key: config.accesskey,
+	    s3Bucket: config.bucket
 	};
 
 	return s3Credentials;

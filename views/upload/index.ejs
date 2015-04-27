@@ -1,4 +1,3 @@
-
 <style>
   body {
     overflow: hidden;
@@ -35,21 +34,23 @@
 
 
 
-<!-- ============= angular script ===============-->
 <script type="text/javascript">
 
-  // angular instantiate
+ // load modules
   var myApp = angular.module('myApp', ['ngRoute','ngTouch','ngSanitize']);
 
-  // controller
-  myApp.controller('mainController', function($scope, $http, $timeout)
-  {
+ // angular controller
+ myApp.controller('mainController', function($scope, $http, $timeout)
+ {
     // set default values
     $scope.privacy = 'Public';
-    $scope.dropvalues = ["default", "test1","test2"];
+
+    // build dropdown
+    $scope.dropvalues = ["default"];
 
     // submit button listener
     $scope.submit = function() {
+      $scope.dropvalues.push($scope.formvalue);
       $scope.foldername = $scope.formvalue;
     };
 
@@ -65,12 +66,47 @@
       }
     });
 
-
     // radio button listener
     $scope.$watch('privacy', function()
     {
       $http.get('/upload/'+$scope.privacy)
       .success(function(response) {
+
+          if(!response.folders.mssg){
+              var list = _.pluck(response.folders.data, 'Prefix');
+              var listFix = _.map(list, function(e){ return _.initial(e).join(""); });
+              $scope.dropvalues = _.union($scope.dropvalues, _.without(listFix, 'default'));
+          }
+          else {
+              $scope.mssgType = 'danger';
+              $scope.mssg = "<h5><b>Amazon AWS Error</b></h5>" + response.folders.mssg;
+          }
+
+          // update dropdown
+
+          // AWS.config.credentials = response.data.awsCredentials;
+          // AWS.config.region = response.data.awsRegion;
+
+          // var s3 = new AWS.S3();
+          // var params = {
+          //   Bucket: $scope.privacy,
+          //   Delimiter: '/'            // get only list of "folders", not files
+          // };
+
+          // s3.listObjects(params, function(err, data) {
+          //   if (err){
+          //     $scope.mssgType = 'danger';
+          //     $scope.mssg = "<h5><b>Amazon AWS Error</b></h5>"+err.message;
+          //     console.log(err);
+          //   }
+          //   else{
+          //     var list = _.pluck(data.CommonPrefixes, 'Prefix');
+          //     $scope.dropvalues = _.union($scope.dropvalues, list);
+          //     console.log("asd");
+          //   }
+          // });
+
+          // update plupload
           $scope.notAuthenticated = response.data.notAuthenticated;
           $("#uploader").remove();
 
@@ -117,8 +153,13 @@
         }
     }
 
-  });
+});
+
 </script>
+
+
+
+
 
 
 <!-- ============= body ===============-->
@@ -134,7 +175,7 @@
             <div class="portlet-body">
 
               <!-- Error messages -->
-              <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: mssg.length + '%'}">
+              <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: 5 + mssg.length + '%'}">
                 <div ng-bind-html="mssg"></div>
                 <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a>
               </div>

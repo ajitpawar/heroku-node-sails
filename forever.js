@@ -12,7 +12,7 @@ var child = new (forever.Monitor)('app.js', {
 
 // ** SEND EMAIL **
 child.on('exit', function () {
-    console.error('"forever" made 3 attempts to restart the app. Exiting now.');
+    console.error('error: app made 3 attempts to restart. Exiting now.');
 });
 
 
