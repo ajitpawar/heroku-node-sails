@@ -1,6 +1,6 @@
 <style>
-  body {
-    overflow: hidden;
+  body{
+    background-color: #fff
   }
   iframe {
     width: 60%;
@@ -22,7 +22,7 @@
   }
   #uploader{
     width: 90%;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
   }
   .btn-warning {
     height: 18px;
@@ -35,93 +35,84 @@
 
 
 
-<!-- ============= body ===============-->
-<div style="margin-top:50px"></div>
+<div class="container-fluid" ng-app="myApp" ng-controller="ngUpload">
+  <div class="row vdivide">
 
-<div class="content" ng-app="myApp" ng-controller="ngUpload">
-  <div class="container">
+    <!--========= LEFT ========-->
+  	<div class="col-sm-6 col-sm-offset-2">
 
-    <!-- LEFT -->
-      <div class="layout layout-stack-sm layout-main-left" >
-        <div class="col-sm-7 col-md-8 layout-main">
-          <div class="portlet">
-            <div class="portlet-body">
-
-              <!-- Error messages -->
-              <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: 5 + mssg.length + '%'}">
-                <div ng-bind-html="mssg"></div>
-                <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a>
-              </div>
-
-              <!-- Actual uploader gets attached here -->
-              <div id="static">
-                <div id="uploader"></div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-    <!-- RIGHT -->
-      <div class="col-sm-5 col-md-4 layout-sidebar">
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Upload to an existing folder</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="icons-list text-md">
-                <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" class="form-control" style="width:70%">
-                <!-- angular inserts an empty value first. hide it like this -->
-                  <option style="display:none" value=""></option>
-                </select>
-              </ul>
-            </div>
-          </div>
-
-
-          <div id="or">
-            <h5><b>OR</b></h5>
-          </div>
-
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Create a new folder</h3>
-            </div>
-            <div class="panel-body">
-              <form role="form" class="form-inline" data-toggle="validator">
-                  <div class="form-group">
-                     <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" ng-model="formvalue" placeholder="enter new name">
-                  </div>
-                  <button type="submit" class="btn btn-info" ng-click="submit()">Submit</button>
-                  <div class="help-block with-errors"></div>
-              </form>
-            <div id="note">Note: Use only letters, digits, dash or underscore</div>
-            </div>
-          </div>
-
-
-          <div class="panel panel-warning" style="margin-top:50px">
-            <div class="panel-heading">
-              <h3 class="panel-title">File Privacy</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="icons-list text-md">
-                  <div class="radio">
-                <label>
-                <input type="radio" ng-model="privacy" value="Public" checked="checked">Public</label>
-                  </div>
-                  <div class="radio <% if(!user){ %> disabled <% } %>">
-                    <label><input type="radio" value="Private" ng-model="privacy" <% if(!user){ %> disabled <% } %> >Private</label>
-                    <a href="/auth/google" class="btn btn-warning" role="button">Login required</a>
-                  </div>
-                </ul>
-            </div>
-          </div>
-
-        </div>
-
+      <!-- Error messages -->
+      <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: 5 + mssg.length + '%'}">
+        <div ng-bind-html="mssg"></div>
+        <p ng-if="notAuthenticated" style="margin-top:20px"><a href="/auth/google" role="button" class="btn btn-danger">Login</a>
       </div>
-    </div>
+
+      <!-- Actual uploader gets attached here -->
+      <div id="static">
+        <div id="uploader"></div>
+      </div>
+  	</div>
+
+    <!--========= RIGHT ========-->
+  	<div class="col-sm-3">
+
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Upload to an existing folder</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="icons-list text-md">
+              <select ng-model="dropvalue" ng-options="v as v for v in dropvalues" class="form-control" style="width:70%">
+              <!-- angular inserts an empty value first. hide it like this -->
+                <option style="display:none" value=""></option>
+              </select>
+            </ul>
+          </div>
+        </div>
+
+
+        <div id="or">
+          <h5><b>OR</b></h5>
+        </div>
+
+
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Create a new folder</h3>
+          </div>
+          <div class="panel-body">
+            <form role="form" class="form-inline" data-toggle="validator">
+                <div class="form-group">
+                   <input type="text" pattern="^[A-Za-z][A-Za-z0-9\-\_]+" class="form-control" ng-model="formvalue" placeholder="enter new name">
+                </div>
+                <button type="submit" class="btn btn-info" ng-click="submit()">Submit</button>
+                <div class="help-block with-errors"></div>
+            </form>
+          <div id="note">Note: Use only letters, digits, dash or underscore</div>
+          </div>
+        </div>
+
+
+        <div class="panel panel-warning" style="margin-top:50px">
+          <div class="panel-heading">
+            <h3 class="panel-title">File Privacy</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="icons-list text-md">
+                <div class="radio">
+                  <label>
+                  <input type="radio" ng-model="privacy" value="Public" checked="checked">Public</label>
+                </div>
+                <div class="radio <% if(!user){ %> disabled <% } %>">
+                  <label><input type="radio" value="Private" ng-model="privacy" <% if(!user){ %> disabled <% } %> >Private</label>
+                  <a href="/auth/google" class="btn btn-warning" role="button">Login required</a>
+                </div>
+              </ul>
+          </div>
+        </div>
+
+  	</div>
+
   </div>
+</div>
+

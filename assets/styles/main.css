@@ -4,6 +4,7 @@ body {
   font-family: 'Open Sans', 'Trebuchet MS', arial, sans-serif;
   overflow-x: hidden;
   background-color: #F4F4F4;
+  font-size: 13px;
 }
 
 .container-fluid {
@@ -27,7 +28,6 @@ body {
 
 /* Left Navbar */
 .navbar-inverse {
-  font-size: 14px;
 	margin-bottom: 0;
 	background-color: #00A4B7;
 	background-image: -webkit-linear-gradient(top, #425d75 0%, #2f4354 100%);
