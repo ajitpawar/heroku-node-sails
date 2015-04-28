@@ -1,45 +1,9 @@
-<style>
-  body{
-    background-color: #fff
-  }
-  iframe {
-    width: 60%;
-    height: 70%;
-    border: #fff;
-    margin-left: 20px;
-    margin-top: 50px;
-  }
-  #note {
-    margin-top: 15px;
-    color: green;
-    /*font-style: italic;*/
-    font-size: 13px;
-  }
-  #or{
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px
-  }
-  #uploader{
-    width: 90%;
-    /*margin-top: 20px;*/
-  }
-  .btn-warning {
-    height: 18px;
-    font-size: 11px;
-    padding: 0 5px 0 5px;
-    margin-left: 3px;
-  }
-</style>
-
-
-
 
 <div class="container-fluid" ng-app="myApp" ng-controller="ngUpload">
-  <div class="row vdivide">
+  <div class="row divider">
 
     <!--========= LEFT ========-->
-  	<div class="col-sm-6 col-sm-offset-2">
+  	<div class="col-sm-6 col-sm-offset-2" style="margin-top:70px; padding-right:70px">
 
       <!-- Error messages -->
       <div ng-if="mssg" class="alert alert-{{mssgType}} fade in" role="alert" ng-style="{width: 5 + mssg.length + '%'}">
@@ -54,7 +18,7 @@
   	</div>
 
     <!--========= RIGHT ========-->
-  	<div class="col-sm-3">
+  	<div class="col-sm-3" style="margin-top:70px; padding-left:30px">
 
         <div class="panel panel-info">
           <div class="panel-heading">

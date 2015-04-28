@@ -3,20 +3,15 @@ body {
   margin: 0;
   font-family: 'Open Sans', 'Trebuchet MS', arial, sans-serif;
   overflow-x: hidden;
-  background-color: #F4F4F4;
+  background-color: #fff;
   font-size: 13px;
 }
 
-.container-fluid {
-  margin-top: 20px;
-}
-
 /* Vertical divider */
-.row.vdivide [class*='col-']:not(:last-child):after {
-  margin-top: -20px;
+.row.divider [class*='col-']:not(:last-child):after {
 	width: 1em;
   min-height: 70px;
-  height: 100%;
+  height: 500px;
 	content: "";
 	display:block;
 	position: absolute;
@@ -26,7 +21,41 @@ body {
 	box-shadow: inset 8px 0px 15px -10px rgba(0, 0, 0, 0.2);
 }
 
-/* Left Navbar */
+
+/****************
+  /upload view
+****************/
+  iframe {
+    width: 60%;
+    height: 70%;
+    border: #fff;
+    margin-left: 20px;
+    margin-top: 50px;
+  }
+  #note {
+    margin-top: 15px;
+    color: green;
+    /*font-style: italic;*/
+    font-size: 13px;
+  }
+  #or{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px
+  }
+  #uploader{
+    width: 90%;
+    /*margin-top: 20px;*/
+  }
+  .btn-warning {
+    height: 18px;
+    font-size: 11px;
+    padding: 0 5px 0 5px;
+    margin-left: 3px;
+  }
+
+
+/* Top Navbar */
 .navbar-inverse {
 	margin-bottom: 0;
 	background-color: #00A4B7;
@@ -50,6 +79,7 @@ body {
 }
 .navbar-inverse .navbar-nav > li > a:hover {
   background-color: #2c3e4e;
+  height: 60px;
 }
 
 
