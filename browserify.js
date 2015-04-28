@@ -1,11 +1,11 @@
 
 /*********************************************************
- 	Files placed here will be browserified and placed into
+ 	Files placed here will be packaged into single file at
 	/js/browserify-include.js
 
 	In your html page, include <link src="/js/browserify-include.js"></link>
-	so that 3rd party libraries mentioned below will become available
-	on that page
+	that file so that those npm modules will become available
+	in your browser
 
 ***************************************************************/
 

@@ -1,0 +1,120 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Open Sans', 'Trebuchet MS', arial, sans-serif;
+  overflow-x: hidden;
+  background-color: #F4F4F4;
+}
+
+.container-fluid {
+  margin-top: 20px;
+}
+
+/* Vertical divider */
+.row.vdivide [class*='col-']:not(:last-child):after {
+  margin-top: -20px;
+	width: 1em;
+  min-height: 70px;
+  height: 100%;
+	content: "";
+	display:block;
+	position: absolute;
+	top:0; bottom: 0; right: 0;
+	border-left: 1px solid #ccc;
+	-webkit-box-shadow: inset 8px 0px 15px -10px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 8px 0px 15px -10px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Navbar */
+.navbar-inverse {
+  font-size: 14px;
+	margin-bottom: 0;
+	background-color: #00A4B7;
+	background-image: -webkit-linear-gradient(top, #425d75 0%, #2f4354 100%);
+	background-image: linear-gradient(to bottom, #425d75 0%, #00A4B7 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff425d75', endColorstr='#ff2f4354', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	border: none;
+	border-bottom: 1px solid #00A4B7;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	z-index: 1001;
+	border-color: #00A4B7;
+}
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.navbar-inverse .navbar-nav > li > a:hover {
+  background-color: #2c3e4e;
+}
+
+
+/* Dropdown navbar */
+.navbar-default{
+  height: 65px;
+  position: relative;
+  background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+.dropdown {
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+.dropdown:first-child {
+  margin-left: 150px;
+}
+.dropdown-menu {
+  font-size: 13px;
+  line-height: 1;
+}
+
+
+/* Logo */
+.navbar-inverse .navbar-brand {
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.navbar-inverse .navbar-brand:hover {
+  color: #fff;
+  background-color: #2c3e4e;
+}
+.navbar-inverse .navbar-brand-img {
+  height: 60px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+/* !Sticky Footer */
+/* ----------------------------------------------- */
+/* Wrapper for page content to push down footer */
+.footer {
+  color: #fff;
+  line-height: 60px;
+  background-color: #2f4354;
+  border-top: 1px solid #ddd;
+  height: 60px;
+}
+.footer:before,
+.footer:after {
+  content: " ";
+  display: table;
+}
+.footer:after {
+  clear: both;
+}
+.footer p {
+  margin-bottom: 0;
+}
+.footer a {
+  color: #a0b6c9;
+}
+.container-fluid {
+  min-height: 80%;
+  height: auto;
+}
