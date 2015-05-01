@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>pawar.ca</title>
+
+    <!-- Viewport mobile support -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- <link rel="shortcut icon" href="/img/favicon.ico"> -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <style type="text/css">
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: 'Open Sans', 'Trebuchet MS', arial, sans-serif;
+        font-size: 13px;
+        background-image: url('/img/bg.jpg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-color:#fff;
+      }
+
+      /* For mobile devices */
+      @media only screen and (max-width: 767px) {
+        body {
+          background-image: url('/img/bg_mobile.jpg');
+        }
+      }
+
+      /* Top Navbar */
+      .navbar-inverse {
+        margin-bottom: 0;
+        /*background-color: #000000;*/
+        /*background-image: -webkit-linear-gradient(top, #425d75 0%, #2f4354 100%);*/
+        /*background-image: linear-gradient(to bottom, #425d75 0%, #000000 100%);*/
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff425d75', endColorstr='#ff2f4354', GradientType=0);
+        filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+        border: none;
+        border-bottom: 1px solid #000000;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        z-index: 1001;
+        border-color: #000000;
+      }
+      .navbar-inverse .navbar-nav > li > a {
+        color: #fff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      }
+      .navbar-inverse .navbar-nav > li > a:hover {
+        background-color: #2c3e4e;
+        height: 50px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <header class="navbar navbar-inverse" role="banner">
+      <div class="container">
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/expense">Expense</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/download">Download</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+  </body>
+</html>
