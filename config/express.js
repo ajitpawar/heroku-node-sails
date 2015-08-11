@@ -5,8 +5,8 @@ var passport = require('passport')
 
 // Get credentials from
 // console.developers.google.com
-var GOOGLE_CLIENT_ID = "450642794440-5fs9j6a45oppub6rcbutthl3beb91t79.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = "eUkL8EXspmvFUJ6W2H4kt0eL";
+var GOOGLE_CLIENT_ID = "###";
+var GOOGLE_CLIENT_SECRET = "##";
 var CALL_BACK_URL = "http://localhost:3000/auth/google/callback";
 
 
